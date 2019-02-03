@@ -1,11 +1,50 @@
-/**=============== Examples =================**/
-// require('./examples/vff-title-element');
-// require('./examples/vff-calculator-api');
-/**==========================================**/
+const teamsData = require('./teams');
 
-/**======= To define new vff element ==============**/
-// window.vff.define(element-name, element-class);
+function convertNameToId(name) {
+    return name.replace(/\s+/g, '-').toLowerCase();
+}
 
-/**======= To extend vff with new functions =======**/
-// window.vff.extend(api-namespace, api-object);
+class Team {
+    constructor(details){
+        Object.assign(this, details);
+        this.id = convertNameToId(this.name);
+    }
+
+    getName() {return this.name;}
+    getAbbreviation() {return this.abbreviation;}
+    getLeague() {return this.league;}
+    getColors() {
+        let colors = this.colors;
+        if(colors) return colors.hex || colors.rgb || colors.cymk || colors.pms;
+    }
+    getLogo(){
+        return require(`./img/${this.getLeague().toLowerCase()}/${this.id}.svg`);
+    }
+}
+
+
+let teams = teamsData.map(team => new Team(team));
+
+
+window.vff.extend('sportteams', {
+    all : () => teams,
+    league : (league) => {
+        return teams.reduce((arr, team) => {
+            if(team.league && team.league.toLowerCase() === league){
+                arr.push(team);
+            }
+            return arr;
+        }, []);
+    },
+    team : (name, league) => {
+        let found;
+        teams.forEach(team => {
+            if(name && team.getName().toLowerCase() === name.toLowerCase() && (!league || league.toLowerCase() === team.toLowerCase())){
+                found = team;
+                return;
+            }
+        });
+        return found;
+    }
+});
 

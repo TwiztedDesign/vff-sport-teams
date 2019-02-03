@@ -50,6 +50,11 @@ module.exports =  {
                 test : /\.json$/,
                 use : 'json-loader',
                 include
+            },
+            {
+                test: /\.svg$/,
+                loader: 'svg-inline-loader',
+                include
             }
         ]
     },
