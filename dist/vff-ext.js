@@ -129,7 +129,7 @@ window.vff.extend('sportteams', {
     },
     league: function league(_league) {
         return teams.reduce(function (arr, team) {
-            if (team.league && team.league.toLowerCase() === _league) {
+            if (team.league && team.league.toLowerCase() === _league.toLowerCase()) {
                 arr.push(team);
             }
             return arr;
@@ -138,9 +138,9 @@ window.vff.extend('sportteams', {
     team: function team(name, league) {
         var found = void 0;
         teams.forEach(function (team) {
-            if (name && team.getName().toLowerCase() === name.toLowerCase() && (!league || league.toLowerCase() === team.toLowerCase())) {
+            if (name && team.getName().toLowerCase() === name.toLowerCase() && (!league || league.toLowerCase() === team.getLeague().toLowerCase())) {
                 found = team;
-                return;
+                return found;
             }
         });
         return found;
