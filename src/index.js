@@ -30,7 +30,7 @@ window.vff.extend('sportteams', {
     all : () => teams,
     league : (league) => {
         return teams.reduce((arr, team) => {
-            if(team.league && team.league.toLowerCase() === league){
+            if(team.league && team.league.toLowerCase() === league.toLowerCase()){
                 arr.push(team);
             }
             return arr;
@@ -39,9 +39,9 @@ window.vff.extend('sportteams', {
     team : (name, league) => {
         let found;
         teams.forEach(team => {
-            if(name && team.getName().toLowerCase() === name.toLowerCase() && (!league || league.toLowerCase() === team.toLowerCase())){
+            if(name && team.getName().toLowerCase() === name.toLowerCase() && (!league || league.toLowerCase() === team.getLeague().toLowerCase())){
                 found = team;
-                return;
+                return found;
             }
         });
         return found;
